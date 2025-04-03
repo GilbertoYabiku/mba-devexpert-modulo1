@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBADevExpertModulo1.Infrast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBADevExpertModulo1.Domain", "src\MBADevExpertModulo1.Domain\MBADevExpertModulo1.Domain.csproj", "{F397FDA5-7B1A-4B6A-BE22-6C421C0B131F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBADevExpertModulo1.WebAPI", "src\MBADevExpertModulo1.WebAPI\MBADevExpertModulo1.WebAPI.csproj", "{B6E31E54-3BF8-40CC-B171-FDE2A0B237CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F397FDA5-7B1A-4B6A-BE22-6C421C0B131F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F397FDA5-7B1A-4B6A-BE22-6C421C0B131F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F397FDA5-7B1A-4B6A-BE22-6C421C0B131F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E31E54-3BF8-40CC-B171-FDE2A0B237CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E31E54-3BF8-40CC-B171-FDE2A0B237CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E31E54-3BF8-40CC-B171-FDE2A0B237CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E31E54-3BF8-40CC-B171-FDE2A0B237CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,22 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MBADevExpertModulo1.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MBADevExpertModulo1.Infrastructure.Database;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext(DbContextOptions<DatabaseContext> options) : IdentityDbContext(options)
 {
     public DbSet<Product> Product { get; set; }
     public DbSet<Category> Category { get; set; }
     public DbSet<Seller> Seller { get; set; }
-    protected override void OnConfiguring(DbContextOptionsBuilder builder)
-    {
-        builder.UseSqlServer("");
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Seller>(e =>
         {
             e.ToTable("Sellers");

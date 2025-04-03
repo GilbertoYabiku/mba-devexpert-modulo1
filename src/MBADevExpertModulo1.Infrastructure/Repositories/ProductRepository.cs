@@ -1,67 +1,58 @@
 ﻿using MBADevExpertModulo1.Domain.Models;
+using MBADevExpertModulo1.Infrastructure.Database;
 using MBADevExpertModulo1.Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace MBADevExpertModulo1.Infrastructure.Repositories;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository(DatabaseContext db) : IProductRepository
 {
-    public ProductRepository() { }
-
-    public void AddProduct(Product product)
+    public async Task AddProductAsync(Product product)
     {
-        using var db = new Database.DatabaseContext();
+        product.Deleted = false;
         db.Product.Add(product);
-        db.SaveChanges();
+        await db.SaveChangesAsync();
     }
 
-    public void UpdateProduct(Product product)
+    public async Task UpdateProductAsync(Product product)
     {
-        using var db = new Database.DatabaseContext();
         var productDb = db.Product.Find(product);
         if (productDb != null)
         {
             db.Product.Update(product);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 
-    public void RemoveProduct(Product product)
+    public async Task RemoveProductAsync(int id)
     {
-        using var db = new Database.DatabaseContext();
-        var productDb = db.Product.Find(product);
+        var productDb = db.Product.Find(id);
         if (productDb != null)
         {
-            db.Product.Remove(product);
-            db.SaveChanges();
+            productDb.Deleted = true;
+            db.Product.Remove(productDb);
+            await db.SaveChangesAsync();
         }
     }
 
-    public Product FindProductById(int id)
+    public async Task<Product> FindProductByIdAsync(int id)
     {
-        using var db = new Database.DatabaseContext();
-        var productById = db.Product.Where( c => c.Id == id).SingleOrDefault();
-        return productById;
+        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where( c => c.Id == id && !c.Deleted).SingleOrDefaultAsync() ?? new Product();
     }
 
-    public ICollection<Product> FindAllProducts()
+    public async Task<ICollection<Product>> FindAllProductsAsync()
     {
-        using var db = new Database.DatabaseContext();
-        var products = db.Product.Where(c => c.Id > 0).OrderBy(c => c.Id).ToList();
-        return products;
+        return await db.Product.Include(c => c.Category).Where(c => c.Id > 0).OrderBy(c => c.Id).ToListAsync();
     }
 
-    public ICollection<Product> FindAllActiveProducts()
+    public async Task<ICollection<Product>> FindAllActiveProductsAsync()
     {
-        using var db = new Database.DatabaseContext();
-        var products = db.Product.Where(c => c.Id > 0 && !c.Deleted).OrderBy(c => c.Id).ToList();
-        return products;
+        return await db.Product.Include(c => c.Category).Where(c => c.Id > 0 && !c.Deleted).OrderBy(c => c.Id).ToListAsync();
     }
 
-    public ICollection<Product> FindProductsBySellerId(int sellerId)
+    public async Task<ICollection<Product>> FindProductsBySellerIdAsync(int sellerId)
     {
-        using var db = new Database.DatabaseContext();
-        var productsBySellerId = db.Product.Where(c => c.SellerId == sellerId).OrderBy(c => c.Id).ToList();
-        return productsBySellerId;
+        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where(c => c.SellerId == sellerId).OrderBy(c => c.Id).ToListAsync();
     }
 }
 

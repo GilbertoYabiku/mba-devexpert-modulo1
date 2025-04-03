@@ -4,7 +4,7 @@ namespace MBADevExpertModulo1.Infrastructure.Interfaces;
 
 public interface ISellerRepository
 {
-    public void AddSeller(Seller seller);
-    public Seller FindSellerById(int id);
+    public void AddSellerAsync(Seller seller);
+    public Task<Seller> FindSellerByIdAsync(int id);
 }
 

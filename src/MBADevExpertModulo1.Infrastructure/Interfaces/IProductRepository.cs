@@ -4,12 +4,12 @@ namespace MBADevExpertModulo1.Infrastructure.Interfaces
 {
     public interface IProductRepository
     {
-        public void AddProduct(Product product);
-        public void UpdateProduct(Product product);
-        public void RemoveProduct(Product product);
-        public Product FindProductById(int id);
-        public ICollection<Product> FindAllProducts();
-        public ICollection<Product> FindAllActiveProducts();
-        public ICollection<Product> FindProductsBySellerId(int sellerId);
+        public Task AddProductAsync(Product product);
+        public Task UpdateProductAsync(Product product);
+        public Task RemoveProductAsync(int id);
+        public Task<Product> FindProductByIdAsync(int id);
+        public Task<ICollection<Product>> FindAllProductsAsync();
+        public Task<ICollection<Product>> FindAllActiveProductsAsync();
+        public Task<ICollection<Product>> FindProductsBySellerIdAsync(int sellerId);
     }
 }
