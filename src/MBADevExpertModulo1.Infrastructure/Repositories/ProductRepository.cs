@@ -50,9 +50,9 @@ public class ProductRepository(DatabaseContext db) : IProductRepository
         return await db.Product.Include(c => c.Category).Where(c => c.Id > 0 && !c.Deleted).OrderBy(c => c.Id).ToListAsync();
     }
 
-    public async Task<ICollection<Product>> FindProductsBySellerIdAsync(int sellerId)
+    public async Task<ICollection<Product>> FindProductsByCategoryIdAsync(int categoryId)
     {
-        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where(c => c.SellerId == sellerId).OrderBy(c => c.Id).ToListAsync();
+        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where(c => c.CategoryId == categoryId).OrderBy(c => c.Id).ToListAsync();
     }
 }
 

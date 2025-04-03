@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MBADevExpertModulo1.Infrastructure.Repositories;
 public class SellerRepository(DatabaseContext db) : ISellerRepository
 {
-    public async void AddSellerAsync(Seller seller)
+    public async Task AddSellerAsync(Seller seller)
     {
         db.Seller.Add(seller);
         await db.SaveChangesAsync();

@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using MBADevExpertModulo1.Domain.Models;
 using MBADevExpertModulo1.Infrastructure.Interfaces;
-using MBADevExpertModulo1.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -16,12 +16,14 @@ public class AuthController : ControllerBase
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager; 
     private readonly JWTSettings _jwtSettings;
+    private readonly ISellerRepository _sellerRepository;
 
-    public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IOptions<JWTSettings> jwtSettings)
+    public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IOptions<JWTSettings> jwtSettings, ISellerRepository sellerRepository)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtSettings = jwtSettings.Value;
+        _sellerRepository = sellerRepository;
     }
 
     [HttpPost("register")]
@@ -41,6 +43,14 @@ public class AuthController : ControllerBase
         if (result.Succeeded)
         {
             await _signInManager.SignInAsync(user, false);
+
+            await _sellerRepository.AddSellerAsync(new Seller ()
+            {
+                Id = int.Parse(user.Id),
+                Email = user.Email,
+                Deleted = false
+            });
+
             return Ok(await GenerateJWT(user.Email));
         }
 
@@ -62,13 +72,27 @@ public class AuthController : ControllerBase
         return Problem("Invalid user or password");
     }
 
-    private string GenerateJWT()
+    private async Task<string> GenerateJWT(string email)
     {
+        var user = await _userManager.FindByEmailAsync(email);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.UserName)
+        };
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
 
         var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
         {
+            Subject = new ClaimsIdentity(claims),
             Issuer = _jwtSettings.Issuer,
             Audience = _jwtSettings.Audience,
             Expires = DateTime.UtcNow.AddHours(_jwtSettings.HoursUntilExpiration),
