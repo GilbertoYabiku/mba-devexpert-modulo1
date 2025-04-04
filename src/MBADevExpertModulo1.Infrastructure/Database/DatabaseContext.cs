@@ -25,7 +25,6 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : Identi
             e.HasKey(e => e.Id);
             e.Property(e => e.Name).HasColumnType("NVARCHAR(100)").IsRequired();
             e.Property(e => e.Email).HasColumnType("VARCHAR(254)").IsRequired();
-            e.Property(e => e.Password).HasColumnType("NVARCHAR(254)").IsRequired();
             e.Property(e => e.Deleted).HasColumnType("BOOL").HasDefaultValue(false).IsRequired();
         });
 
