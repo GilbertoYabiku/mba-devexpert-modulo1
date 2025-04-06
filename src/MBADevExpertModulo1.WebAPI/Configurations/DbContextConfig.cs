@@ -7,10 +7,22 @@ public static class DbContextConfig
 {
     public static WebApplicationBuilder AddDbContextConfig(this WebApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<DatabaseContext>(options =>
+        if (builder.Environment.IsDevelopment())
         {
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-        });
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+    }
+        else
+        {
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+        }
+
+        
         return builder;
     }
 }

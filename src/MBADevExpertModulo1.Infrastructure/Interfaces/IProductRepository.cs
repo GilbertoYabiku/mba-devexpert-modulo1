@@ -10,6 +10,7 @@ namespace MBADevExpertModulo1.Infrastructure.Interfaces
         public Task<Product> FindProductByIdAsync(int id);
         public Task<ICollection<Product>> FindAllProductsAsync();
         public Task<ICollection<Product>> FindAllActiveProductsAsync();
-        public Task<ICollection<Product>> FindProductsByCategoryIdAsync(int categoryId);
+        public Task<ICollection<Product>> FindAllProductsByCategoryIdAsync(int categoryId);
+        public Task<ICollection<Product>> FindAllProductsBySellerIdAsync(int sellerId);
     }
 }

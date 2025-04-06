@@ -1,3 +1,4 @@
+using MBADevExpertModulo1.Infrastructure.Configurations;
 using MBADevExpertModulo1.Infrastructure.IoC;
 using MBADevExpertModulo1.WebAPI.Configurations;
 
@@ -25,5 +26,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseDbMigrationHelper();
 
 app.Run();

@@ -66,7 +66,7 @@ public class CategoryController(ICategoryRepository categoryRepository, IProduct
         var categoryInDB = await categoryRepository.FindCategoryByIdAsync(id);
         if (categoryInDB == null) return NotFound(id);
 
-        var relatedProduct = await productRepository.FindProductsByCategoryIdAsync(id);
+        var relatedProduct = await productRepository.FindAllProductsByCategoryIdAsync(id);
         if (relatedProduct != null || relatedProduct.Count > 0) return BadRequest("Category has product linked");
 
         await categoryRepository.RemoveCategoryAsync(categoryInDB);
