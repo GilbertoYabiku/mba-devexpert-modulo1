@@ -13,8 +13,8 @@ Descreva livremente mais detalhes do seu projeto aqui.
 
 O projeto consiste em:
 
-- **Aplicação MVC:** Interface web para interação com o blog.
-- **API RESTful:** Exposição dos recursos do blog para integração com outras aplicações ou desenvolvimento de front-ends alternativos.
+- **Aplicação MVC:** Interface web para interação com a plataforma de e-commerce.
+- **API RESTful:** Exposição dos recursos da plataforma de e-commerce e para integração com outras aplicações ou desenvolvimento de front-ends alternativos.
 - **Autenticação e Autorização:** Implementação de controle de acesso, diferenciando administradores e usuários comuns.
 - **Acesso a Dados:** Implementação de acesso ao banco de dados através de ORM.
 
