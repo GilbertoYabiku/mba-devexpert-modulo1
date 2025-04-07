@@ -1,0 +1,27 @@
+﻿@using MBADevExpertModulo1.Domain.Models
+@model Category
+
+<h4>Categories</h4>
+
+<div>
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Name)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Name)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Description)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Description)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Deleted)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Deleted)
+		</dd>
+	</dl>
+</div>

@@ -1,11 +1,9 @@
 using System.Diagnostics;
 using MBADevExpertModulo1.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MBADevExpertModulo1.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,7 +15,7 @@ namespace MBADevExpertModulo1.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Products");
         }
 
         public IActionResult Privacy()
@@ -25,7 +23,6 @@ namespace MBADevExpertModulo1.Controllers
             return View();
         }
 
-        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

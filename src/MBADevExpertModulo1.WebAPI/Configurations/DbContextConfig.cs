@@ -11,7 +11,7 @@ public static class DbContextConfig
         {
             builder.Services.AddDbContext<DatabaseContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
     }
         else

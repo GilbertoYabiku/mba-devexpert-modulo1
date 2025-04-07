@@ -7,4 +7,9 @@
     <UserSecretsId>aspnet-MBADevExpertModulo1-6725894a-258c-4dbd-b88c-3cc8dd75d2bd</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MBADevExpertModulo1.Domain\MBADevExpertModulo1.Domain.csproj" />
+    <ProjectReference Include="..\MBADevExpertModulo1.Infrastructure\MBADevExpertModulo1.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
