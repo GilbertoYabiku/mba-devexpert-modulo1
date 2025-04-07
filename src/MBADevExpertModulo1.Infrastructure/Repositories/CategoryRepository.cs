@@ -1,64 +1,43 @@
 ﻿using MBADevExpertModulo1.Domain.Models;
+using MBADevExpertModulo1.Infrastructure.Database;
 using MBADevExpertModulo1.Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 namespace MBADevExpertModulo1.Infrastructure.Repositories;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository (DatabaseContext db): ICategoryRepository
 {
-    public CategoryRepository() { }
-
-    public void AddCategory(Category category)
+    public async Task AddCategoryAsync(Category category)
     {
-        using var db = new Database.DatabaseContext();
+        category.Deleted = false;
         db.Category.Add(category);
-        db.SaveChanges();
+        await db.SaveChangesAsync();
     }
 
-    public void UpdateCategory(Category category)
+    public async Task UpdateCategoryAsync(Category category)
     {
-        using var db = new Database.DatabaseContext();
-        var categoryDb = db.Category.Find(category.Id);
-        if (categoryDb != null)
-        {
-            db.Category.Update(category);
-            db.SaveChanges();
-        }
+        db.Category.Update(category);
+        await db.SaveChangesAsync();
     }
 
-    public void RemoveCategory(Category category)
+    public async Task RemoveCategoryAsync(Category category)
     {
-        using var db = new Database.DatabaseContext();
-        var categoryDb = db.Category.Find(category.Id);
-        if (categoryDb != null)
-        {
-            var relatedProducts = db.Product.Where(p => p.CategoryId == category.Id).ToList();
-            if (relatedProducts.Count < 1)
-            {
-                db.Category.Remove(category);
-
-                db.SaveChanges();
-            }
-        }
+        db.Category.Update(category);
+        await db.SaveChangesAsync();
     }
 
-    public Category FindCategoryById(int id)
+    public async Task<Category> FindCategoryByIdAsync(int id)
     {
-        using var db = new Database.DatabaseContext();
-        var categoryById = db.Category.Where(c => c.Id == id).SingleOrDefault();
-        return categoryById;
+        return await db.Category.Include(c => c.Products).Where(c => c.Id == id && !c.Deleted).SingleOrDefaultAsync() ?? new Category();
     }
 
-    public ICollection<Category> FindAllCategories()
+    public async Task<ICollection<Category>> FindAllCategoriesAsync()
     {
-        using var db = new Database.DatabaseContext();
-        var categories = db.Category.Where(c => c.Id > 0).OrderBy(c => c.Id).ToList();
-        return categories;
+        return await db.Category.Include(c => c.Products).Where(c => c.Id > 0).OrderBy(c => c.Id).ToListAsync();
     }
 
-    public ICollection<Category> FindAllActiveCategories()
+    public async Task<ICollection<Category>> FindAllActiveCategoriesAsync()
     {
-        using var db = new Database.DatabaseContext();
-        var categories = db.Category.Where(c => c.Id > 0 && !c.Deleted).OrderBy(c => c.Id).ToList();
-        return categories;
+        return await db.Category.Include(c => c.Products).Where(c => c.Id > 0 && !c.Deleted).OrderBy(c => c.Id).ToListAsync();
     }
 }
 
