@@ -82,7 +82,7 @@ A estrutura do projeto é organizada da seguinte forma:
 4. **Executar a API:**
    - `cd src/MBADevExpertModulo1.WebAPI/`
    - `dotnet run`
-   - Acesse a documentação da API em: http://localhost:5001/swagger
+   - Acesse a documentação da API em: http://localhost:5117/swagger
 
 ## **7. Instruções de Configuração**
 
