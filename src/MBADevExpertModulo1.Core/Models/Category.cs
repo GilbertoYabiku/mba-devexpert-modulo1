@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MBADevExpertModulo1.Core.Models; 
+namespace MBADevExpertModulo1.Core.Models;
 
 public class Category : BaseModel
 {

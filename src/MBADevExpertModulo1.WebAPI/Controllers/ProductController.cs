@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using MBADevExpertModulo1.Core.Models;
 using MBADevExpertModulo1.Core.Interfaces;
+using MBADevExpertModulo1.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,7 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
     {
         var product = await productRepository.FindProductByIdAsync(id);
         if (product == null) return NotFound(id);
-        
+
         return Ok(product);
     }
 

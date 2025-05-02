@@ -1,6 +1,6 @@
-﻿using MBADevExpertModulo1.Core.Models;
-using MBADevExpertModulo1.Core.Database;
+﻿using MBADevExpertModulo1.Core.Database;
 using MBADevExpertModulo1.Core.Interfaces;
+using MBADevExpertModulo1.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MBADevExpertModulo1.Core.Repositories;
@@ -15,7 +15,7 @@ public class ProductRepository(DatabaseContext db) : IProductRepository
     }
 
     public async Task UpdateProductAsync(Product product)
-    {        
+    {
         db.Product.Update(product);
         await db.SaveChangesAsync();
     }
@@ -33,7 +33,7 @@ public class ProductRepository(DatabaseContext db) : IProductRepository
 
     public async Task<Product> FindProductByIdAsync(Guid id)
     {
-        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where( c => c.Id == id && !c.Deleted).AsNoTracking().SingleOrDefaultAsync() ?? new Product();
+        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where(c => c.Id == id && !c.Deleted).AsNoTracking().SingleOrDefaultAsync() ?? new Product();
     }
 
     public async Task<ICollection<Product>> FindAllProductsAsync()

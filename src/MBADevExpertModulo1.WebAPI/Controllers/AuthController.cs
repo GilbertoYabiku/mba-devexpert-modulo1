@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MBADevExpertModulo1.Core.Models;
 using MBADevExpertModulo1.Core.Interfaces;
+using MBADevExpertModulo1.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -14,7 +14,7 @@ namespace MBADevExpertModulo1.WebAPI.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager; 
+    private readonly UserManager<IdentityUser> _userManager;
     private readonly JWTSettings _jwtSettings;
     private readonly ISellerRepository _sellerRepository;
 
@@ -44,7 +44,7 @@ public class AuthController : ControllerBase
         {
             await _signInManager.SignInAsync(user, false);
 
-            await _sellerRepository.AddSellerAsync(new Seller ()
+            await _sellerRepository.AddSellerAsync(new Seller()
             {
                 Id = Guid.Parse(user.Id),
                 Name = user.UserName,

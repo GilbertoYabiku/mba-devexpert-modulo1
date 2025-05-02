@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MBADevExpertModulo1.Core.Database;
 using MBADevExpertModulo1.Core.Models;
-using MBADevExpertModulo1.Core.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +32,7 @@ public static class DbMigrationHelpers
 
         var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-        if(env.IsDevelopment() || env.IsEnvironment("Docker"))
+        if (env.IsDevelopment() || env.IsEnvironment("Docker"))
         {
             await context.Database.MigrateAsync();
             await EnsureSeedPopulates(context);
@@ -57,7 +51,7 @@ public static class DbMigrationHelpers
             Name = "seller 1 name",
             Email = "email@email.com",
             Deleted = false,
-            Products = new List<Product>(){ 
+            Products = new List<Product>(){
                 new Product(){
                     Name = "product 1 name",
                     SellerId = sellerId,

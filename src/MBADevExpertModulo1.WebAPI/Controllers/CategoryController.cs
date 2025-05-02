@@ -1,5 +1,5 @@
-﻿using MBADevExpertModulo1.Core.Models;
-using MBADevExpertModulo1.Core.Interfaces;
+﻿using MBADevExpertModulo1.Core.Interfaces;
+using MBADevExpertModulo1.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,7 @@ public class CategoryController(ICategoryRepository categoryRepository, IProduct
     {
         var category = await categoryRepository.FindCategoryByIdAsync(id);
         if (category == null) return NotFound(id);
-            
+
         return Ok(category);
     }
 
@@ -35,8 +35,8 @@ public class CategoryController(ICategoryRepository categoryRepository, IProduct
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateCategoryAsync(Category category)
     {
-        if(!ModelState.IsValid) return ValidationProblem(new ValidationProblemDetails(ModelState));
-            
+        if (!ModelState.IsValid) return ValidationProblem(new ValidationProblemDetails(ModelState));
+
         await categoryRepository.AddCategoryAsync(category);
         return CreatedAtAction("GetByIdAsync", category.Id, category);
     }

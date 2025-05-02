@@ -1,9 +1,7 @@
 ﻿using System.Security.Claims;
 using MBADevExpertModulo1.Core.Interfaces;
 using MBADevExpertModulo1.Core.Models;
-using MBADevExpertModulo1.Core.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -143,7 +141,7 @@ public class ProductsController(IProductRepository productRepository, IWebHostEn
         var path = Path.Combine(webHostEnvironment.WebRootPath, "Uploads");
         if (formFile != null && formFile.Length > 0)
         {
-            var uniqueFileName = Guid.NewGuid().ToString()+"_"+formFile.FileName;
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
             var filePath = Path.Combine(path, uniqueFileName);
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {

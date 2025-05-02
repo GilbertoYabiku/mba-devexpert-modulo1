@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using MBADevExpertModulo1.Core.Interfaces;
-using MBADevExpertModulo1.Core.Repositories;
 using MBADevExpertModulo1.Models;
 using Microsoft.AspNetCore.Mvc;
 

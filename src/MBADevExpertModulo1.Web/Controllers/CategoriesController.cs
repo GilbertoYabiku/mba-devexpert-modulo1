@@ -1,9 +1,7 @@
-﻿using System.ComponentModel;
+﻿using MBADevExpertModulo1.Core.Interfaces;
 using MBADevExpertModulo1.Core.Models;
-using MBADevExpertModulo1.Core.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using MBADevExpertModulo1.Core.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MBADevExpertModulo1.Web.Controllers;
 
@@ -22,7 +20,7 @@ public class CategoriesController(ICategoryRepository categoryRepository, IProdu
     {
         return View();
     }
-    
+
     [HttpPost("new")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Name,Description,Deleted")] Category category)
@@ -64,7 +62,7 @@ public class CategoriesController(ICategoryRepository categoryRepository, IProdu
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Deleted")] Category category)
     {
-        if(id != category.Id)
+        if (id != category.Id)
         {
             return NotFound();
         }
@@ -85,7 +83,7 @@ public class CategoriesController(ICategoryRepository categoryRepository, IProdu
     {
         var category = await categoryRepository.FindCategoryByIdAsync(id);
 
-        if(category == null)
+        if (category == null)
         {
             return NotFound();
         }

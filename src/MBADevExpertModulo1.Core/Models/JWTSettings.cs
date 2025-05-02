@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MBADevExpertModulo1.Core.Models;
+﻿namespace MBADevExpertModulo1.Core.Models;
 public class JWTSettings
 {
     public string? Secret { get; set; }

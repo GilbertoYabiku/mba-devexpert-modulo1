@@ -15,7 +15,7 @@ public static class DbContextConfig
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
                 options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
             });
-    }
+        }
         else
         {
             builder.Services.AddDbContext<DatabaseContext>(options =>

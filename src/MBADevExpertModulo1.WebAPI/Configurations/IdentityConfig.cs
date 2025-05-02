@@ -1,6 +1,6 @@
-﻿using MBADevExpertModulo1.Core.Models;
-using System.Text;
+﻿using System.Text;
 using MBADevExpertModulo1.Core.Database;
+using MBADevExpertModulo1.Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;

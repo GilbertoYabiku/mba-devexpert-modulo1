@@ -1,6 +1,6 @@
-﻿using MBADevExpertModulo1.Core.Models;
-using MBADevExpertModulo1.Core.Database;
+﻿using MBADevExpertModulo1.Core.Database;
 using MBADevExpertModulo1.Core.Interfaces;
+using MBADevExpertModulo1.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MBADevExpertModulo1.Core.Repositories;
