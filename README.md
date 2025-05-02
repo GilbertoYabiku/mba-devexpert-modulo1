@@ -3,8 +3,7 @@
 ## **1. Apresentação**
 
 Bem-vindo ao repositório do projeto **[e-Market]**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Introdução ao Desenvolvimento ASP.NET Core**.
-O objetivo principal desenvolver uma aplicação de blog que permite aos usuários criar, editar, visualizar e excluir posts e comentários, tanto através de uma interface web utilizando MVC quanto através de uma API RESTful.
-Descreva livremente mais detalhes do seu projeto aqui.
+O objetivo principal desenvolver uma aplicação de e-commerce que permite aos usuários criar, editar, visualizar e excluir produtos e categorias de produtos, tanto através de uma interface web utilizando MVC quanto através de uma API RESTful.
 
 ### **Autor**
 - **Gilberto Moshim Yabiku Junior**
@@ -40,8 +39,7 @@ A estrutura do projeto é organizada da seguinte forma:
 
 
 - src/
-  - MBADevExpertModulo1.Domain/ - Modelos de dados
-  - MBADevExpertModulo1.Infrastructure/ - Configuração do EF Core
+  - MBADevExpertModulo1.Core/ - Configuração do EF Core e modelos de dados
   - MBADevExpertModulo1.Web/ - Aplicação web MVC com AspNet Core
   - MBADevExpertModulo1.WebAPI/ - Aplicação WebAPI com AspNet Core
   - README.md - Arquivo de Documentação do Projeto
@@ -50,8 +48,13 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ## **5. Funcionalidades Implementadas**
 
-- **CRUD para Produtos e Categorias:** Permite criar, editar, visualizar e excluir produtos e categorias.
-- **Autenticação e Autorização:** Diferenciação entre usuários comuns e administradores.
+- **CRUD para Categorias de produtos:** Permite criar, editar, visualizar e excluir categorias de produtos para usuários logados no sistema.
+- **CRUD para Produtos:** 
+	- Permite criação de registros de produtos, desde que o usuário esteja logado no sistema. Possível inclusão de imagem do produto, bem como outras propriedades relevantes como preço e quantidade de estoque;
+	- Permite que apenas os vendedores editem seus produtos;
+	- Permite que usuários logados e não logados possam visualizar produtos ativos;
+	- Permite que apenas os vendedores possam excluir seus produtos.
+- **Autenticação e Autorização:** Implementação de sistema para registrar e logar em uma conta no app MVC e no WebAPI para mecanismos de autorização.
 - **API RESTful:** Exposição de endpoints para operações CRUD via API.
 - **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
 
@@ -60,7 +63,7 @@ A estrutura do projeto é organizada da seguinte forma:
 ### **Pré-requisitos**
 
 - .NET SDK 9.0 ou superior
-- SQL Server
+- SQL Server ou SQLite
 - Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
 - Git
 
@@ -77,12 +80,12 @@ A estrutura do projeto é organizada da seguinte forma:
 3. **Executar a Aplicação MVC:**
    - `cd src/MBADevExpertModulo1.Web/`
    - `dotnet run`
-   - Acesse a aplicação em: http://localhost:5000
+   - Acesse a aplicação em: https://localhost:7203/
 
 4. **Executar a API:**
    - `cd src/MBADevExpertModulo1.WebAPI/`
    - `dotnet run`
-   - Acesse a documentação da API em: http://localhost:5117/swagger
+   - Acesse a documentação da API em: https://localhost:7174/swagger
 
 ## **7. Instruções de Configuração**
 
@@ -93,7 +96,7 @@ A estrutura do projeto é organizada da seguinte forma:
 
 A documentação da API está disponível através do Swagger. Após iniciar a API, acesse a documentação em:
 
-http://localhost:5001/swagger
+https://localhost:7174/swagger
 
 ## **9. Avaliação**
 

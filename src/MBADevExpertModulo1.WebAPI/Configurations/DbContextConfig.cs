@@ -1,4 +1,4 @@
-﻿using MBADevExpertModulo1.Infrastructure.Database;
+﻿using MBADevExpertModulo1.Core.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -15,7 +15,7 @@ public static class DbContextConfig
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
                 options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
             });
-    }
+        }
         else
         {
             builder.Services.AddDbContext<DatabaseContext>(options =>

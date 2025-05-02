@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using MBADevExpertModulo1.Domain.Models;
-using MBADevExpertModulo1.Infrastructure.Interfaces;
+using MBADevExpertModulo1.Core.Interfaces;
+using MBADevExpertModulo1.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,22 +13,36 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
 {
     [AllowAnonymous]
     [HttpGet]
-    [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
     public async Task<ActionResult<ICollection<Product>>> GetAllAsync()
     {
         return Ok(await productRepository.FindAllActiveProductsAsync());
     }
 
-    [AllowAnonymous]
-    [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Product>> GetByIdAsync(int id)
+    public async Task<ActionResult<Product>> GetByIdAsync(Guid id)
     {
-        var category = await productRepository.FindProductByIdAsync(id);
-        if (category == null) return NotFound(id);
-        
-        return Ok(category);
+        var product = await productRepository.FindProductByIdAsync(id);
+        if (product == null) return NotFound(id);
+
+        return Ok(product);
+    }
+
+    [HttpGet("category/{id:guid}")]
+    [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IEnumerable<Product>>> GetByCategoryIdAsync(Guid id)
+    {
+        var category = await categoryRepository.FindCategoryByIdAsync(id);
+        if (category == null) return BadRequest("Linked category does not exist");
+
+        var product = await productRepository.FindAllProductsByCategoryIdAsync(id);
+        if (product == null) return NotFound(id);
+
+        return Ok(product);
     }
 
     [HttpPost]
@@ -45,11 +59,11 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
     }
 
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateProductAsync(int id, Product product)
+    public async Task<IActionResult> UpdateProductAsync(Guid id, Product product)
     {
         if (id != product.Id) return BadRequest("Provided IDs don't match");
         if (!ModelState.IsValid) return ValidationProblem(new ValidationProblemDetails(ModelState));
@@ -69,11 +83,10 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
         return NoContent();
     }
 
-    [Authorize]
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteProductAsync(int id)
+    public async Task<IActionResult> DeleteProductAsync(Guid id)
     {
         var productInDB = await productRepository.FindProductByIdAsync(id);
         if (productInDB == null) return NotFound(id);
@@ -82,11 +95,14 @@ public class ProductController(IProductRepository productRepository, ICategoryRe
         {
             return BadRequest("User can't delete the product");
         }
+
+        productInDB.Deleted = true;
+
         await productRepository.RemoveProductAsync(id);
         return Ok();
     }
 
-    private async Task<bool> HasCorrectProductSeller(int id)
+    private async Task<bool> HasCorrectProductSeller(Guid id)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var productInDb = await productRepository.FindProductByIdAsync(id);

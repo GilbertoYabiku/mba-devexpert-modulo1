@@ -1,7 +1,11 @@
-﻿@using MBADevExpertModulo1.Domain.Models
+﻿@using MBADevExpertModulo1.Core.Models
 @model Category
 
-<h4>Categories</h4>
+@{
+	ViewData["Title"] = $"{Model.Name} information";
+}
+
+<h1>@ViewData["Title"]</h1>
 
 <div>
 	<dl class="row">
@@ -24,4 +28,8 @@
 			@Html.DisplayFor(model => model.Deleted)
 		</dd>
 	</dl>
+</div>
+<div>
+	<a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.Id">Edit</a>
+	<a asp-action="Index" class="btn btn-danger">Back</a>
 </div>

@@ -1,21 +1,15 @@
 using System.Diagnostics;
+using MBADevExpertModulo1.Core.Interfaces;
 using MBADevExpertModulo1.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MBADevExpertModulo1.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IProductRepository productRepository) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return RedirectToAction("Index", "Products");
+            return View(await productRepository.FindAllProductsAsync());
         }
 
         public IActionResult Privacy()

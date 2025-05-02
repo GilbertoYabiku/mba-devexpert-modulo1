@@ -1,5 +1,5 @@
-using MBADevExpertModulo1.Infrastructure.Configurations;
-using MBADevExpertModulo1.Infrastructure.IoC;
+using MBADevExpertModulo1.Core.Configurations;
+using MBADevExpertModulo1.Core.IoC;
 using MBADevExpertModulo1.WebAPI.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
