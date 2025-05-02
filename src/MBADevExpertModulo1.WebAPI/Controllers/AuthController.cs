@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MBADevExpertModulo1.Domain.Models;
-using MBADevExpertModulo1.Infrastructure.Interfaces;
+using MBADevExpertModulo1.Core.Models;
+using MBADevExpertModulo1.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -46,7 +46,8 @@ public class AuthController : ControllerBase
 
             await _sellerRepository.AddSellerAsync(new Seller ()
             {
-                Id = int.Parse(user.Id),
+                Id = Guid.Parse(user.Id),
+                Name = user.UserName,
                 Email = user.Email,
                 Deleted = false
             });

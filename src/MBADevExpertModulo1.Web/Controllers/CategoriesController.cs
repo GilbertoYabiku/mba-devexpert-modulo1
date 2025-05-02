@@ -1,62 +1,112 @@
 ﻿using System.ComponentModel;
-using MBADevExpertModulo1.Domain.Models;
-using MBADevExpertModulo1.Infrastructure.Interfaces;
+using MBADevExpertModulo1.Core.Models;
+using MBADevExpertModulo1.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using MBADevExpertModulo1.Core.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
-namespace MBADevExpertModulo1.Web.Controllers
+namespace MBADevExpertModulo1.Web.Controllers;
+
+[Authorize]
+[Route("categories")]
+public class CategoriesController(ICategoryRepository categoryRepository, IProductRepository productRepository) : Controller
 {
-    public class CategoriesController(ICategoryRepository categoryRepository) : Controller
+    [AllowAnonymous]
+    public async Task<IActionResult> Index()
     {
-        public async Task<IActionResult> Index()
+        return View(await categoryRepository.FindAllActiveCategoriesAsync());
+    }
+
+    [Route("new")]
+    public IActionResult Create()
+    {
+        return View();
+    }
+    
+    [HttpPost("new")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Id,Name,Description,Deleted")] Category category)
+    {
+        if (ModelState.IsValid)
         {
-            return View(await categoryRepository.FindAllActiveCategoriesAsync());
+            await categoryRepository.AddCategoryAsync(category);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(category);
+    }
+
+    [AllowAnonymous]
+    [Route("details/{id:guid}")]
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var category = await categoryRepository.FindCategoryByIdAsync(id);
+
+        if (category == null)
+        {
+            return NotFound();
+        }
+        return View(category);
+    }
+
+    [Route("edit/{id:guid}")]
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        var category = await categoryRepository.FindCategoryByIdAsync(id);
+
+        if (category == null)
+        {
+            return NotFound();
+        }
+        return View(category);
+    }
+
+    [HttpPost("edit/{id:guid}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Deleted")] Category category)
+    {
+        if(id != category.Id)
+        {
+            return NotFound();
         }
 
-        public IActionResult Create()
+        if (ModelState.IsValid)
         {
-            return View();
+            var categoryInDB = await categoryRepository.FindCategoryByIdAsync(id);
+            if (categoryInDB == null) return NotFound(id);
+
+            await categoryRepository.UpdateCategoryAsync(category);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(category);
+    }
+
+    [Route("delete/{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var category = await categoryRepository.FindCategoryByIdAsync(id);
+
+        if(category == null)
+        {
+            return NotFound();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Deleted")] Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                await categoryRepository.AddCategoryAsync(category);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
+        return View(category);
+    }
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var category = await categoryRepository.FindCategoryByIdAsync(id);
-            return View(category);
-        }
+    [HttpPost("delete/{id:guid}"), ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(Guid id)
+    {
+        var category = await categoryRepository.FindCategoryByIdAsync(id);
+        if (category == null) return NotFound();
 
-        public async Task<IActionResult> Edit(int id)
-        {
-            var category = await categoryRepository.FindCategoryByIdAsync(id);
-            return View(category);
-        }
+        var relatedProduct = await productRepository.FindAllProductsByCategoryIdAsync(id);
+        if (relatedProduct.Count > 0) return Problem("Category has product linked");
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Deleted")] Category category)
-        {
-            if(id != category.Id)
-            {
-                return NotFound();
-            }
+        category.Deleted = true;
 
-            if (ModelState.IsValid)
-            {
+        await categoryRepository.RemoveCategoryAsync(category);
 
-                await categoryRepository.UpdateCategoryAsync(category);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
+        return RedirectToAction(nameof(Index));
     }
 }

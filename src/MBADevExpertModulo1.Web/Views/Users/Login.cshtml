@@ -1,0 +1,35 @@
+﻿@using MBADevExpertModulo1.Core.Models
+@model LoginUser;
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="col-md-4">
+    <div class="account-box">
+        <h2>Login</h2>
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Login" class="form-control" />
+            <p>
+                Create new account <a asp-controller="Users" asp-action="Signup">Signup</a>
+            </p>
+            <div class="text-center">
+                <a asp-controller="Home" asp-action="Index">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+}

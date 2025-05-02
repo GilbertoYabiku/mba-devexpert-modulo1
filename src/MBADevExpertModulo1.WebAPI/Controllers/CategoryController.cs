@@ -1,5 +1,5 @@
-﻿using MBADevExpertModulo1.Domain.Models;
-using MBADevExpertModulo1.Infrastructure.Interfaces;
+﻿using MBADevExpertModulo1.Core.Models;
+using MBADevExpertModulo1.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,10 +19,10 @@ public class CategoryController(ICategoryRepository categoryRepository, IProduct
     }
 
     [AllowAnonymous]
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Category>> GetByIdAsync(int id)
+    public async Task<ActionResult<Category>> GetByIdAsync(Guid id)
     {
         var category = await categoryRepository.FindCategoryByIdAsync(id);
         if (category == null) return NotFound(id);
@@ -41,11 +41,11 @@ public class CategoryController(ICategoryRepository categoryRepository, IProduct
         return CreatedAtAction("GetByIdAsync", category.Id, category);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> UpdateCategoryAsync(int id, Category category)
+    public async Task<ActionResult> UpdateCategoryAsync(Guid id, Category category)
     {
         if (id != category.Id) return BadRequest("Provided IDs don't match");
         if (!ModelState.IsValid) return ValidationProblem(new ValidationProblemDetails(ModelState));
@@ -58,16 +58,18 @@ public class CategoryController(ICategoryRepository categoryRepository, IProduct
     }
 
     [Authorize]
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> DeleteCategoryAsync(int id)
+    public async Task<ActionResult> DeleteCategoryAsync(Guid id)
     {
         var categoryInDB = await categoryRepository.FindCategoryByIdAsync(id);
         if (categoryInDB == null) return NotFound(id);
 
         var relatedProduct = await productRepository.FindAllProductsByCategoryIdAsync(id);
         if (relatedProduct != null || relatedProduct.Count > 0) return BadRequest("Category has product linked");
+
+        categoryInDB.Deleted = true;
 
         await categoryRepository.RemoveCategoryAsync(categoryInDB);
         return NoContent();

@@ -1,4 +1,4 @@
-﻿using MBADevExpertModulo1.Infrastructure.Database;
+﻿using MBADevExpertModulo1.Core.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
