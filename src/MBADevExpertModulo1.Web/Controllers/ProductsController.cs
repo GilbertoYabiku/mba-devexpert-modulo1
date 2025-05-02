@@ -38,7 +38,6 @@ public class ProductsController(IProductRepository productRepository, IWebHostEn
         {
             var category = await categoryRepository.FindCategoryByIdAsync(product.CategoryId);
             if (category == null) return NotFound();
-            product.Category = category;
             await productRepository.AddProductAsync(product);
             return RedirectToAction(nameof(Index));
         }

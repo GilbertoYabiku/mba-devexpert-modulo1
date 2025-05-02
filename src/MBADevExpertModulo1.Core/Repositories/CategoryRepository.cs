@@ -27,7 +27,7 @@ public class CategoryRepository(DatabaseContext db) : ICategoryRepository
 
     public async Task<Category> FindCategoryByIdAsync(Guid id)
     {
-        return await db.Category.Include(c => c.Products).Where(c => c.Id == id && !c.Deleted).AsNoTracking().SingleOrDefaultAsync() ?? new Category();
+        return await db.Category.Where(c => c.Id == id && !c.Deleted).AsNoTracking().SingleOrDefaultAsync() ?? new Category();
     }
 
     public async Task<ICollection<Category>> FindAllCategoriesAsync()

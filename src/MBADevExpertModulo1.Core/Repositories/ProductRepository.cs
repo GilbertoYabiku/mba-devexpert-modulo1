@@ -43,17 +43,17 @@ public class ProductRepository(DatabaseContext db) : IProductRepository
 
     public async Task<ICollection<Product>> FindAllActiveProductsAsync()
     {
-        return await db.Product.Include(c => c.Category).Where(c => !c.Deleted).OrderBy(c => c.Id).AsNoTracking().ToListAsync();
+        return await db.Product.Where(c => !c.Deleted).OrderBy(c => c.Id).AsNoTracking().ToListAsync();
     }
 
     public async Task<ICollection<Product>> FindAllProductsByCategoryIdAsync(Guid categoryId)
     {
-        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where(c => c.CategoryId == categoryId && !c.Deleted).OrderBy(c => c.Id).AsNoTracking().ToListAsync();
+        return await db.Product.Include(c => c.Seller).Where(c => c.CategoryId == categoryId && !c.Deleted).OrderBy(c => c.Id).AsNoTracking().ToListAsync();
     }
 
     public async Task<ICollection<Product>> FindAllProductsBySellerIdAsync(Guid sellerId)
     {
-        return await db.Product.Include(c => c.Category).Include(c => c.Seller).Where(c => c.SellerId == sellerId).OrderBy(c => c.Id).AsNoTracking().ToListAsync();
+        return await db.Product.Include(c => c.Seller).Where(c => c.SellerId == sellerId).OrderBy(c => c.Id).AsNoTracking().ToListAsync();
     }
 }
 
