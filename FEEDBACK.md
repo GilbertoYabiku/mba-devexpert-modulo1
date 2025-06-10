@@ -1,69 +1,90 @@
 # Feedback - Avaliação Geral
 
 ## Front End
+
 ### Navegação
   * Pontos positivos:
-    - Possui views e rotas definidas no projeto MBADevExpertModulo1.Web
-    - Implementação com Razor Pages/Views
+    - Projeto MVC implementado com rotas para produtos, categorias e autenticação.
+    - Views organizadas e fluxo de navegação coerente.
+
+  * Pontos negativos:
+    - Nenhum.
 
 ### Design
-    - Será avaliado na entrega final
+  - Interface funcional e organizada, coerente com um painel administrativo de gerenciamento de marketplace.
 
 ### Funcionalidade
   * Pontos positivos:
-    - CRUD para Produtos e Categorias implementado
-    - Interface web com HTML/CSS básico
+    - CRUD para categorias e produtos implementados no MVC e na API.
+    - Registro do vendedor realizado junto com o usuário do Identity, compartilhando o mesmo ID.
+    - Autenticação e autorização funcionando na API (JWT) e MVC (cookies).
+    - Migrations automáticas, seed de dados e uso de SQLite estão corretamente configurados.
+
+  * Pontos negativos:
+    - A API expõe o endpoint de criação de produtos, porém não realiza a persistência no banco de dados.
 
 ## Back End
+
 ### Arquitetura
   * Pontos positivos:
-    - Estrutura em camadas bem definida na pasta src:
-      * MBADevExpertModulo1.Domain
-      * MBADevExpertModulo1.Infrastructure
-      * MBADevExpertModulo1.Web
-      * MBADevExpertModulo1.WebAPI
+    - Arquitetura em 3 camadas simples (API, MVC, Core), bem estruturada.
+    - IoC bem configurado e estrutura modular clara.
 
   * Pontos negativos:
-    - Arquitetura mais complexa que o necessário com 4 camadas distintas
-    - Recomendação: Uma única camada "Core" já atende muito bem ao propósito
+    - O modelo `JWTSettings` está na mesma pasta das entidades de domínio; idealmente, deveria estar em uma pasta distinta, separando modelos de configuração e entidades.
+    - Uso de nomes e arquivos em inglês, enquanto a linguagem de negócio definida era o português.
 
 ### Funcionalidade
   * Pontos positivos:
-    - Suporte a múltiplos bancos de dados (SQL Server/SQLite)
-    - Implementação do ASP.NET Identity
-    - Configuração de Seed de dados mencionada
+    - Implementação da lógica de autenticação, associação de usuário com vendedor e controle de acesso.
+    - Operações CRUD funcionam bem no MVC.
 
   * Pontos negativos:
-    - Não é possível verificar a implementação completa das funcionalidades mencionadas
+    - Persistência de produto via API está quebrada, comprometendo essa funcionalidade.
 
 ### Modelagem
   * Pontos positivos:
-    - Modelos de dados separados em projeto Domain
-    - Uso do Entity Framework Core
+    - Entidades com estrutura correta e validações robustas.
+    - Separação entre modelos de entrada e entidades está clara.
+
+  * Pontos negativos:
+    - Nenhum.
 
 ## Projeto
+
 ### Organização
   * Pontos positivos:
-    - Estrutura organizada com pasta src na raiz
-    - Arquivo solution (MBADevExpertModulo1.sln) na raiz
-    - .gitignore e .gitattributes adequados
-    - Separação clara dos projetos
+    - Projeto organizado com `src`, solution na raiz, e pastas bem estruturadas.
+    - Inclusão de `README.md` e `FEEDBACK.md`.
+
+  * Pontos negativos:
+    - Estrutura de arquivos poderia separar configurações (como `JWTSettings`) das entidades de negócio.
 
 ### Documentação
   * Pontos positivos:
-    - README.md presente com:
-      * Apresentação do projeto
-      * Tecnologias utilizadas
-      * Estrutura do projeto
-      * Instruções de execução
-    - Documentação da API via Swagger mencionada
-
-  * Pontos negativos:
-    - Arquivo FEEDBACK.md mencionado no README mas não presente no repositório
-    - Documentação poderia ser mais detalhada em relação às funcionalidades
+    - Documentação presente e clara.
+    - Swagger implementado.
 
 ### Instalação
   * Pontos positivos:
-    - Suporte a múltiplos bancos (SQL Server/SQLite)
-    - Seed de dados mencionado
-    - Instruções básicas de instalação presentes
+    - Uso correto de SQLite.
+    - Execução automática de migrations e seed de dados.
+
+  * Pontos negativos:
+    - Nenhum.
+
+---
+
+# 📊 Matriz de Avaliação de Projetos
+
+| **Critério**                   | **Peso** | **Nota** | **Resultado Ponderado**                  |
+|-------------------------------|----------|----------|------------------------------------------|
+| **Funcionalidade**            | 30%      | 9        | 2,7                                      |
+| **Qualidade do Código**       | 20%      | 10       | 2,0                                      |
+| **Eficiência e Desempenho**   | 20%      | 10       | 2,0                                      |
+| **Inovação e Diferenciais**   | 10%      | 10       | 1,0                                      |
+| **Documentação e Organização**| 10%      | 8        | 0,8                                      |
+| **Resolução de Feedbacks**    | 10%      | 9        | 0,9                                      |
+| **Total**                     | 100%     | -        | **9,4**                                  |
+
+## 🎯 **Nota Final: 9,4 / 10**
